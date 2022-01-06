@@ -9,7 +9,7 @@ public class P1520_my {
     private static int M;
     private static int N;
     private static int[][] map;
-    private static boolean[][] visited;
+    private static int[][] visited;
 
     private static int[] dy = {0, 0, -1, 1};
     private static int[] dx = {1, -1, 0, 0};
@@ -23,12 +23,14 @@ public class P1520_my {
         N = Integer.parseInt(st.nextToken());
 
         map = new int[M][N];
-        visited = new boolean[M][N];
+        visited = new int[M][N];
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine(), " ");
-            for (int j = 0; j < N; j++)
+            for (int j = 0; j < N; j++){
                 map[i][j] = Integer.parseInt(st.nextToken());
+                visited[i][j] = -1;
+            }
         }
 
         dp(0, 0);
@@ -37,25 +39,29 @@ public class P1520_my {
     }
 
     private static void dp(int y, int x) {
-        visited[y][x] = true;
-
+        int count = 0;
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
             int nx = x + dx[i];
 
-            if (ny == M - 1 && nx == N - 1 && map[ny][nx] < map[y][x]) {
-                visited = new boolean[M][N];
+            if(!inArea(ny, nx) || map[ny][nx] >= map[y][x])
+                continue;
+
+            if (visited[ny][nx] != -1 || (ny == M - 1 && nx == N - 1)) {
                 result += 1;
                 return;
             }
 
-            if (inArea(ny, nx) && map[ny][nx] < map[y][x]) {
-                dp(ny, nx);
-            }
+            count += 1;
+            visited[ny][nx] = result;
+            dp(ny, nx);
         }
+
+        if(count == 0)
+            visited[y][x] = -1;
     }
 
     private static boolean inArea(int y, int x) {
-        return y >= 0 && x >= 0 && y < M && x < N && !visited[y][x];
+        return y >= 0 && x >= 0 && y < M && x < N;
     }
 }
