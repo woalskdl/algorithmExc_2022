@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class P1520_my {
+public class P1520_answer {
     private static int M;
     private static int N;
     private static int[][] map;
