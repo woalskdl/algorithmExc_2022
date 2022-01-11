@@ -36,9 +36,16 @@ public class P1520_my {
         dp(0, 0);
 
         System.out.println(result);
+
+        for(int i=0; i<M; i++){
+            for(int j=0; j<N; j++){
+                System.out.print(visited[i][j] + "  ");
+            }
+            System.out.println();
+        }
     }
 
-    private static void dp(int y, int x) {
+    private static int dp(int y, int x) {
         int count = 0;
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
@@ -47,18 +54,23 @@ public class P1520_my {
             if(!inArea(ny, nx) || map[ny][nx] >= map[y][x])
                 continue;
 
+            count += 1;
+
             if (visited[ny][nx] != -1 || (ny == M - 1 && nx == N - 1)) {
                 result += 1;
-                return;
+                continue;
             }
 
-            count += 1;
-            visited[ny][nx] = result;
-            dp(ny, nx);
+            if(dp(ny, nx) != -1)
+                visited[ny][nx] = result;
         }
 
-        if(count == 0)
+        if(count == 0){
             visited[y][x] = -1;
+            return -1;
+        }
+
+        return result;
     }
 
     private static boolean inArea(int y, int x) {
