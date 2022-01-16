@@ -192,5 +192,100 @@ public class StreamTest {
 
         System.out.println(listToString);
 
+        String listToString2 = productList.stream()
+                .map(Product::getName)
+                .collect(Collectors.joining(", ", "<", ">"));
+
+        System.out.println(listToString2);
+
+        Integer summingAmount = productList.stream().collect(Collectors.summingInt(Product::getNo));
+        System.out.println(summingAmount);
+
+        Integer summingAmount2 = productList.stream().mapToInt(Product::getNo).sum();
+        System.out.println(summingAmount2);
+
+        IntSummaryStatistics statistics = productList.stream().collect(Collectors.summarizingInt(Product::getNo));
+        System.out.println(statistics.getMax());
+        System.out.println(statistics.getMin());
+        System.out.println(statistics.getCount());
+        System.out.println(statistics.getAverage());
+        System.out.println(statistics.getSum());
+
+        // groupingBy
+        System.out.println("=====================");
+        Map<Integer, List<Product>> collectorMapOfLists = productList.stream()
+                .collect(Collectors.groupingBy(Product::getNo));
+        // 같은 수량끼리 묶어서 List 로 Map 형성
+
+        // Partition
+        Map<Boolean, List<Product>> mapPartitioned = productList.stream()
+                .collect(Collectors.partitioningBy(el -> el.getNo() > 15));
+        // true / false 인 두 분류로 나눔
+
+        // matching
+        System.out.println("=====================");
+        List<String> names2 = Arrays.asList("Eric", "Elena", "Java");
+
+        boolean anyMatch = names2.stream().anyMatch(e -> e.contains("a"));
+        System.out.println(anyMatch);
+        boolean allMatch = names2.stream().allMatch(e -> e.length() > 4);
+        System.out.println(allMatch);
+        boolean noneMatch = names2.stream().noneMatch(e -> e.endsWith("a"));
+        System.out.println(noneMatch);
+
+        /////////////////// stream 고급
+
+        // 동작 순서서
+       System.out.println("=====================");
+        names2.stream()
+                .filter(e -> {
+                    System.out.println("filter() was called.");
+                    return e.contains("a");
+                })
+                .map(e -> {
+                    System.out.println("map() was called.");
+                    return e.toUpperCase();
+                })
+                .findFirst();
+
+        //처음 요소인 “Eric” 은 “a” 문자열을 가지고 있지 않기 때문에 다음 요소로 넘어갑니다. 이 때 “filter() was called.” 가 한 번 출력됩니다.
+        //다음 요소인 “Elena” 에서 "filter() was called."가 한 번 더 출력됩니다. "Elena"는 "a"를 가지고 있기 때문에 다음 연산으로 넘어갈 수 있습니다.
+        //다음 연산인 map 에서 toUpperCase 메소드가 호출됩니다. 이 때 "map() was called"가 출력됩니다.
+        //마지막 연산인 findFirst 는 첫 번째 요소만을 반환하는 연산입니다. 따라서 최종 결과는 “ELENA” 이고 다음 연산은 수행할 필요가 없어 종료됩니다
+
+        System.out.println("=====================");
+        Stream<String> streams = Stream.of("Eric", "Elena", "Java")
+               .filter(e -> e.contains("a"));
+
+        Optional<String> firstElement = streams.findFirst();
+//        Optional<String> anyElement = streams.findAny(); // 여기서 에러 터짐. 왜냐면 stream 은 재사용 불가
+
+        // >>>>
+        List<String> names3 = Stream.of("Eric", "Elena", "Java")
+                .filter(e -> e.contains("a"))
+                .collect(Collectors.toList());
+
+
+
+        Optional<String> firstElement2 = names3.stream().findFirst();
+        Optional<String> anyElement2 = names3.stream().findAny();
+
+        System.out.println(firstElement2);
+        System.out.println(anyElement2);
+
+        // null-safe
+        List<String> nullList = null;
+
+        collectionToStream(nullList)
+                .filter(str -> str.contains("a"))
+                .map(String::length)
+                .forEach(System.out::println);
+    }
+
+    private static <T> Stream<T> collectionToStream(Collection<T> collection){
+        return Optional
+                .ofNullable(collection)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty);
     }
 }
