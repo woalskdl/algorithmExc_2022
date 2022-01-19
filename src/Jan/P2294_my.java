@@ -3,13 +3,13 @@ package Jan;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class P2294_my {
 
     private static int n;
     private static int k;
-    private static int[] coins;
+    private static List<Integer> coins;
     private static int[] arr;
 
     public static void main(String[] args) throws IOException {
@@ -19,7 +19,7 @@ public class P2294_my {
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
-        coins = new int[n];
+        HashSet<Integer> temp = new HashSet<>();
         arr = new int[k + 1];
 
         for(int i=0; i<=k; i++)
@@ -28,25 +28,28 @@ public class P2294_my {
         for(int i=0; i<n; i++){
             st = new StringTokenizer(br.readLine());
             int val = Integer.parseInt(st.nextToken());
-            coins[i] = val;
-            arr[val] = 1;
+            temp.add(val);
+
+            if(val <= k)
+                arr[val] = 1;
         }
+
+        coins = new ArrayList<>(temp);
+        Collections.sort(coins, Collections.reverseOrder());
 
         System.out.println(dp(k));
     }
 
     private static int dp(int val){
-        if(val <= 0)
-            return -1;
-
         if(arr[val] != -1)
             return arr[val];
 
-        // ArrayIndexOutOfBound???
-
         int minVal = Integer.MAX_VALUE;
-        for(int i=0; i<n; i++){
-            int count = dp(val - coins[i]) + 1;
+        for(Integer c : coins){
+            if(c >= val)
+                continue;
+
+            int count = dp(val - c) + 1;
             if(count != 0 && minVal > count)
                 minVal = count;
         }
