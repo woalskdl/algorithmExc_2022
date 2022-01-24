@@ -37,14 +37,16 @@ public class P2294_my {
         coins = new ArrayList<>(temp);
         Collections.sort(coins, Collections.reverseOrder());
 
-        System.out.println(dp(k));
+        int result = dp(k);
+
+        System.out.println(result > 10000 ? -1 : result);
     }
 
     private static int dp(int val){
         if(arr[val] != -1)
             return arr[val];
 
-        int minVal = Integer.MAX_VALUE;
+        int minVal = 10001;
         for(Integer c : coins){
             if(c >= val)
                 continue;
@@ -53,9 +55,6 @@ public class P2294_my {
             if(count != 0 && minVal > count)
                 minVal = count;
         }
-
-        if(minVal == Integer.MAX_VALUE)
-            minVal = -1;
 
         return arr[val] = minVal;
     }
