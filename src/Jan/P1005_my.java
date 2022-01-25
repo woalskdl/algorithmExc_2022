@@ -36,7 +36,6 @@ public class P1005_my {
             }
 
             int W = Integer.parseInt(br.readLine());
-            System.out.println("W >> " + W);
 
             System.out.println(dp(W, build, time));
         }
@@ -46,21 +45,23 @@ public class P1005_my {
         if(build[0][target] != 0)
             return build[0][target];
 
-        int result = Integer.MAX_VALUE - 1;
+        int result = -1;
         int N = build.length;
 
-        for(int i=1; i<N + 1; i++) {
+        for(int i=1; i<N; i++) {
             if(build[i][target] == 0)
                 continue;
 
             int temp = dp(i, build, time);
-            if(temp < result)
+            if(temp > result)
                 result = temp;
         }
 
-        if(result == Integer.MAX_VALUE - 1)
+        if(result == -1)
             result = time[target];
+        else
+            result += time[target];
 
-        return build[target][0] = result + time[target];
+        return build[0][target] = result;
     }
 }
