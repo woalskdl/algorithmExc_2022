@@ -8,14 +8,14 @@ import java.util.StringTokenizer;
 public class P1890_my {
     private static int N;
     private static int[][] map;
-    private static int[][] count;
+    private static long[][] count;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
 
         map = new int[N][N];
-        count = new int[N][N];
+        count = new long[N][N];
 
         StringTokenizer st;
 
@@ -26,9 +26,16 @@ public class P1890_my {
         }
 
         System.out.println(dp(0, 0));
+
+//        for(int i=0; i<N; i++){
+//            System.out.println();
+//            for(int j=0; j<N; j++){
+//                System.out.print(count[i][j] + " ");
+//            }
+//        }
     }
 
-    private static int dp(int y, int x) {
+    private static long dp(int y, int x) {
         if (y == N - 1 && x == N - 1)
             return 1;
 
@@ -36,7 +43,7 @@ public class P1890_my {
             return count[y][x];
 
         int jump = map[y][x];
-        int result = 0;
+        long result = 0;
 
         if (inArea(y + jump, x))
             result += dp(y + jump, x);
