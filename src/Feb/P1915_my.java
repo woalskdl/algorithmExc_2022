@@ -27,25 +27,35 @@ public class P1915_my {
                 arr[i][j] = line.charAt(j) - '0';
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (arr[i][j] == 1 && visited[i][j] != 0)
-                    dp(i, j);
+        int length = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < m - 1; j++) {
+                if (arr[i][j] == 1) {
+                    if(visited[i][j] == 0)
+                        length = Math.max(length, dp(i, j, 1, 1));
+                    else
+                        length = Math.max(length, visited[i][j]);
+                }
             }
         }
 
+        System.out.println(length * length);
+
     }
 
-    private static int dp(int y, int x) {
+    private static int dp(int y, int x, int lengthY, int lengthX) {
         if (visited[y][x] != 0)
             return visited[y][x];
 
+        if (y >= n - 1 || x >= m - 1)
+            return Math.min(lengthY, lengthX);
+
+        if (arr[y + 1][x] == 1)
+            lengthY = dp(y + 1, x, lengthY + 1, lengthX);
+
         if (arr[y][x + 1] == 1)
-            return dp(y, x + 1);
+            lengthX = dp(y, x + 1, lengthY, lengthX + 1);
 
-        if(arr[y + 1][x] == 1)
-            return dp(y + 1, x);
-
-        return 0;
+        return visited[y][x] = Math.min(lengthY, lengthX);
     }
 }
