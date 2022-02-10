@@ -47,13 +47,10 @@ public class P1915_my {
         if (visited[y][x] != 0)
             return visited[y][x];
 
-        if (y >= n - 1 || x >= m - 1)
-            return Math.min(lengthY, lengthX);
-
-        if (arr[y + 1][x] == 1)
+        if (y < n - 1 && arr[y + 1][x] == 1)
             lengthY = dp(y + 1, x, lengthY + 1, lengthX);
 
-        if (arr[y][x + 1] == 1)
+        if (x < m - 1 && arr[y][x + 1] == 1)
             lengthX = dp(y, x + 1, lengthY, lengthX + 1);
 
         return visited[y][x] = Math.min(lengthY, lengthX);
