@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 public class P2098_my {
     private static int N;
     private static int[][] W;
-    private static int[] cost;
+    private static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,36 +25,29 @@ public class P2098_my {
         }
 
         int min = Integer.MAX_VALUE;
-        for (int i = 0; i < N; i++) {
-            cost = new int[N];
-            int total = dp(0, i, i);
+        StringBuilder sb = new StringBuilder();
+        visited = new boolean[N];
+        min = dp(0, 0, 0);
 
-            min = Math.min(min, total);
-        }
-
-        System.out.println(min);
+        sb.append(min + "\n");
+        System.out.println(sb);
 
     }
 
     private static int dp(int c, int idx, int start) {
+        visited[idx] = true;
         int min = Integer.MAX_VALUE;
-        int minIdx = -1;
 
         for (int i = 0; i < N; i++) {
-            if (cost[i] == 0 && W[idx][i] != 0 && min > W[idx][i]) {
-                min = W[idx][i];
-                minIdx = i;
+            if (W[idx][i] != 0 && !visited[i]) {
+                min = Math.min(min, dp(c + W[idx][i], i, start));
+                visited[i] = false;
             }
         }
 
-        if (minIdx == -1) {
-            c += W[idx][start];
-            return c;
-        }
+        if(min == Integer.MAX_VALUE)
+            min = c + W[idx][start];
 
-        c += min;
-        cost[idx] = c;
-
-        return dp(c, minIdx, start);
+        return min;
     }
 }
