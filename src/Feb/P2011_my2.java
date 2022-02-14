@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class P2011_my {
-
+public class P2011_my2 {
     private static final int MAX = 26;
     private static final int REM = 1000000;
 
@@ -40,43 +39,45 @@ public class P2011_my {
 
         dp[0] = 1;
 
-        StringBuilder sb;
-
         for (int i = 1; i < length; i++) {
-            sb = new StringBuilder();
+            int fst = code[i - 1];
+            int scd = code[i];
 
-            sb.append(code[i - 1]);
-            sb.append(code[i]);
-
-            int num = Integer.parseInt(String.valueOf(sb));
-
-            if (num <= 0)
-                break;
-
-            if (num <= MAX) {
-                if(num % 10 == 0) {
-                    if (i == 1) {
-                        dp[i] = dp[i - 1];
-                        continue;
-                    }
-
-                    dp[i] = dp[i - 1] == dp[i - 2] ? dp[i - 1] : dp[i - 2];
-                } else if (num < 10) {
-                    dp[i] = dp[i - 1];
-                } else {
-                    if(i == 1) {
-                        dp[i] = (dp[i - 1] + 1) % REM;
-                        continue;
-                    }
-
-                    dp[i] = (dp[i - 1] % REM + dp[i - 2] % REM) % REM;
-                }
-            } else {
-                if (num % 10 == 0)
-                    break;
-
+            if(fst == 0) {
                 dp[i] = dp[i - 1];
+            } else {
+                if(scd == 0) {
+                    if(fst != 1 && fst != 2)
+                        break;
+
+                    
+                }
             }
+
+//            if (num <= MAX) {
+//                if(num % 10 == 0) {
+//                    if (i == 1) {
+//                        dp[i] = dp[i - 1];
+//                        continue;
+//                    }
+//
+//                    dp[i] = dp[i - 1] == dp[i - 2] ? dp[i - 1] : dp[i - 2];
+//                } else if (num < 10) {
+//                    dp[i] = dp[i - 1];
+//                } else {
+//                    if(i == 1) {
+//                        dp[i] = (dp[i - 1] + 1) % REM;
+//                        continue;
+//                    }
+//
+//                    dp[i] = (dp[i - 1] % REM + dp[i - 2] % REM) % REM;
+//                }
+//            } else {
+//                if (num % 10 == 0)
+//                    break;
+//
+//                dp[i] = dp[i - 1];
+//            }
         }
 
         Arrays.stream(dp).forEach(System.out::print);
