@@ -3,10 +3,7 @@ package Feb;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class P1062_my {
     private static int N;
@@ -21,11 +18,9 @@ public class P1062_my {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        int result = 0;
-
         // a,n,t,i,c 는 필수
         if(K < 5) {
-            System.out.println(result);
+            System.out.println(0);
             return;
         }
 
@@ -36,7 +31,7 @@ public class P1062_my {
         fix = fix | (1 << LETTERS.indexOf('i'));
         fix = fix | (1 << LETTERS.indexOf('c'));
 
-        Map<Integer, Integer> map = new HashMap<>();
+        int[][] arr = new int[27][1 << LETTERS.length()];
 
         for(int i=0; i<N; i++) {
             String word = br.readLine();
@@ -59,15 +54,25 @@ public class P1062_my {
             if(wordCnt > K)
                 continue;
 
-            if(map.containsKey(check))
-                map.put(check, map.get(check) + 1);
-            else
-                map.put(check, 1);
+            arr[wordCnt][check] += 1;
         }
 
-        for(Integer key : map.keySet())
-            result = Math.max(result, map.get(key));
+        int[] result = arr[K];
+        Arrays.sort(result);
+        int idx = result.length - 1;
+        if(result[idx] != 0) {
+            System.out.println(result[idx]);
+        } else {
+            for(int i=idx; i >= 0; i--) {
+                int[] temp = arr[i];
+                Arrays.sort(temp);
+                if(temp[temp.length  - 1] != 0) {
+                    int cnt = idx - i;
+                    while (cnt >= 0) {
 
-        System.out.println(result);
+                    }
+                }
+            }
+        }
     }
 }
