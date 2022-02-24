@@ -31,14 +31,14 @@ public class P1062_my {
         fix = fix | (1 << LETTERS.indexOf('i'));
         fix = fix | (1 << LETTERS.indexOf('c'));
 
-        int[][] arr = new int[27][1 << LETTERS.length()];
+        int[] arr = new int[1 << LETTERS.length()];
+        int max = (1 << K) - 1;
 
         for(int i=0; i<N; i++) {
             String word = br.readLine();
             String ckWord = word.substring(4, word.length() - 4);
 
             int check = fix;
-            int wordCnt = 5;
             int length = ckWord.length();
 
             for(int j=0; j<length; j++) {
@@ -48,31 +48,29 @@ public class P1062_my {
                     continue;
 
                 check = check | (1 << pos);
-                wordCnt += 1;
             }
 
-            if(wordCnt > K)
+            if(check > max)
                 continue;
 
-            arr[wordCnt][check] += 1;
+            arr[check] += 1;
         }
 
-        int[] result = arr[K];
-        Arrays.sort(result);
-        int idx = result.length - 1;
-        if(result[idx] != 0) {
-            System.out.println(result[idx]);
-        } else {
-            for(int i=idx; i >= 0; i--) {
-                int[] temp = arr[i];
-                Arrays.sort(temp);
-                if(temp[temp.length  - 1] != 0) {
-                    int cnt = idx - i;
-                    while (cnt >= 0) {
+    }
 
-                    }
-                }
-            }
+    private static int cnt(int num) {
+        int result = 0;
+
+        for(int i=0; ; i++) {
+            int ck = (1 << i);
+
+            if((num & ck) > 0)
+                result += 1;
+
+            if((num | ck) > num)
+                break;
         }
+
+        return result;
     }
 }
