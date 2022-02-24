@@ -18,9 +18,11 @@ public class P1062_my {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
+        int result = 0;
+
         // a,n,t,i,c 는 필수
         if(K < 5) {
-            System.out.println(0);
+            System.out.println(result);
             return;
         }
 
@@ -34,11 +36,11 @@ public class P1062_my {
         int[] arr = new int[1 << LETTERS.length()];
         int max = (1 << K) - 1;
 
+        int check = fix;
         for(int i=0; i<N; i++) {
             String word = br.readLine();
             String ckWord = word.substring(4, word.length() - 4);
 
-            int check = fix;
             int length = ckWord.length();
 
             for(int j=0; j<length; j++) {
@@ -52,6 +54,8 @@ public class P1062_my {
 
             if(check > max)
                 continue;
+
+            result += 1; // 기존에 있는 숫자 체크해서 있으면 + 1 뭐 이런식으로?
 
             arr[check] += 1;
         }
