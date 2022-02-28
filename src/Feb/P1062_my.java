@@ -26,21 +26,26 @@ public class P1062_my {
             return;
         }
 
+        if(K == 26) {
+            System.out.println(N);
+            return;
+        }
+
         int fix;
         fix = (1 << LETTERS.indexOf('a'));
-        fix = fix | (1 << LETTERS.indexOf('n'));
-        fix = fix | (1 << LETTERS.indexOf('t'));
-        fix = fix | (1 << LETTERS.indexOf('i'));
-        fix = fix | (1 << LETTERS.indexOf('c'));
+        fix |= (1 << LETTERS.indexOf('n'));
+        fix |= (1 << LETTERS.indexOf('t'));
+        fix |= (1 << LETTERS.indexOf('i'));
+        fix |= (1 << LETTERS.indexOf('c'));
 
         int[] arr = new int[1 << LETTERS.length()];
         int max = (1 << K) - 1;
 
-        int check = fix;
         for(int i=0; i<N; i++) {
             String word = br.readLine();
             String ckWord = word.substring(4, word.length() - 4);
 
+            int check = fix;
             int length = ckWord.length();
 
             for(int j=0; j<length; j++) {
