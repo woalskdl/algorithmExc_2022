@@ -62,7 +62,9 @@ public class P1062_answer {
                 String word = words[i];
 
                 for (int j = 0; j < word.length(); j++) {
-                    if((flag & (1 << word.charAt(j) - 'a')) == 0) {
+                    int ch = word.charAt(j);
+
+                    if((flag & (1 << LETTERS.indexOf(ch))) == 0) {
                         isValid = false;
                         break;
                     }
