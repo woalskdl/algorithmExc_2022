@@ -63,7 +63,7 @@ public class P9328_my2 {
         int w = map[0].length;
 
         int cnt = 0;
-        int priority = Integer.MIN_VALUE;
+        int priority = -1;
 
         boolean[][] visited = new boolean[h][w];
 
@@ -102,7 +102,7 @@ public class P9328_my2 {
                                 queue.add(new Node(ny, nx, 1));
                             } else {
                                 queue.add(new Node(node.y, node.x, priority));
-                                priority += 1;
+                                priority -= 1;
                             }
                         }
                     } else {
@@ -130,7 +130,6 @@ public class P9328_my2 {
             this.x = x;
             this.priority = priority;
         }
-
 
         @Override
         public int compareTo(Node o) {
