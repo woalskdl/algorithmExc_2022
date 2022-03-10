@@ -1,14 +1,15 @@
-package Feb;
+package Mar;
+
+import org.w3c.dom.Node;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class P9328_my {
+public class P9328_my2 {
     private static final String KEY = "abcdefghijklmnopqrstuvwxyz";
     private static final String DOOR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -57,81 +58,87 @@ public class P9328_my {
     }
 
     private static int bfs(char[][] map, int owns) {
-        Queue<Node> queue;
+        PriorityQueue<Node> queue = new PriorityQueue<>();
         int h = map.length;
         int w = map[0].length;
 
-        int result = 0;
+        int cnt = 0;
+        int priority = -1;
 
-        while (true) {
-            int cnt = 0;
-            int temp = owns;
-            queue = new LinkedList<>();
+        boolean[][] visited = new boolean[h][w];
 
-            boolean[][] visited = new boolean[h][w];
+        queue.add(new Node(0, 0, 1));
+        visited[0][0] = true;
 
-            queue.add(new Node(0, 0));
-            visited[0][0] = true;
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
 
-            while (!queue.isEmpty()) {
-                Node node = queue.poll();
+            for (int i = 0; i < 4; i++) {
+                int ny = node.y + dy[i];
+                int nx = node.x + dx[i];
 
-                for (int i = 0; i < 4; i++) {
-                    int ny = node.y + dy[i];
-                    int nx = node.x + dx[i];
+                if (visitable(map, ny, nx) && !visited[ny][nx]) {
+                    if('$' == map[ny][nx]) {
+                        map[ny][nx] = '.';
+                        visited[ny][nx] = true;
+                        queue.add(new Node(ny, nx, 1));
+                        cnt += 1;
+                    }
 
-                    if (visitable(map, ny, nx) && !visited[ny][nx]) {
-                        if('$' == map[ny][nx]) {
+                    if(map[ny][nx] != '.') {
+                        char pos = map[ny][nx];
+
+                        if(KEY.contains(Character.toString(pos))) {
+                            owns |= (1 << KEY.indexOf(pos));
                             map[ny][nx] = '.';
                             visited[ny][nx] = true;
-                            queue.add(new Node(ny, nx));
-                            cnt += 1;
+                            queue.add(new Node(ny, nx, 1));
                         }
 
-                        if(map[ny][nx] != '.') {
-                            char pos = map[ny][nx];
-
-                            if(KEY.contains(Character.toString(pos))) {
-                                temp |= (1 << KEY.indexOf(pos));
+                        if(DOOR.contains(Character.toString(pos))) {
+                            if((owns & (1 << DOOR.indexOf(pos))) > 0) {
                                 map[ny][nx] = '.';
                                 visited[ny][nx] = true;
-                                queue.add(new Node(ny, nx));
+                                queue.add(new Node(ny, nx, 1));
+                            } else {
+                                queue.add(new Node(node.y, node.x, priority));
+                                priority -= 1;
                             }
-
-                            if(DOOR.contains(Character.toString(pos)) && (temp & (1 << DOOR.indexOf(pos))) > 0) {
-                                map[ny][nx] = '.';
-                                visited[ny][nx] = true;
-                                queue.add(new Node(ny, nx));
-                            }
-                        } else {
-                            visited[ny][nx] = true;
-                            queue.add(new Node(ny, nx));
                         }
+                    } else {
+                        visited[ny][nx] = true;
+                        queue.add(new Node(ny, nx, 1));
                     }
                 }
             }
-
-            if(cnt == 0 && temp == owns)
-                break;
-
-            result += cnt;
-            owns = temp;
         }
 
-        return result;
+        return cnt;
     }
 
     private static boolean visitable(char[][] map, int y, int x) {
         return y >= 0 && y < map.length && x >= 0 && x < map[0].length && map[y][x] != '*';
     }
 
-    private static class Node {
+    private static class Node implements Comparable<Node>{
         private int y;
         private int x;
+        private int priority;
 
-        public Node(int y, int x) {
+        public Node(int y, int x, int priority) {
             this.y = y;
             this.x = x;
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            if (this.priority < o.priority)
+                return 1;
+            else if (this.priority > o.priority)
+                return -1;
+
+            return 0;
         }
     }
 }
