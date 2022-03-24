@@ -31,25 +31,22 @@ public class P1086_answer {
 
         fibo = new long[N + 1];
         fibo[1] = 1L;
-        for(int i=2; i<=N; i++)
-            fibo[i] = (long)i * fibo[i - 1];
+        for (int i = 2; i <= N; i++)
+            fibo[i] = (long) i * fibo[i - 1];
 
         dp = new long[K][1 << N];
         dpMod = new int[K][N];
 
-        for(int i=0; i<K; i++) {
+        for (int i = 0; i < K; i++) {
             Arrays.fill(dp[i], -1);
             Arrays.fill(dpMod[i], -1);
         }
 
-        p = memo(0, 0, 0);
+        p = memo(0, 0);
         q = fibo[N];
 
-        if(p == 0) {
+        if (p == 0) {
             q = 1;
-        } else if (p == q) {
-          p = 1;
-          q = 1;
         } else {
             long gcd = GCD(p, q);
             p /= gcd;
@@ -60,30 +57,30 @@ public class P1086_answer {
 
     }
 
-    private static long memo(int mod, int cnt, int flag) {
-        if(dp[mod][flag] != -1)
+    private static long memo(int mod, int flag) {
+        if (dp[mod][flag] != -1)
             return dp[mod][flag];
 
-        if(cnt == N)
+        if (flag == (1 << N) - 1)
             return dp[mod][flag] = mod == 0 ? 1L : 0;
 
         long sum = 0;
-        for(int i=0; i<N; i++) {
-            if((flag & (1 << i)) == (1 << i))
+        for (int i = 0; i < N; i++) {
+            if ((flag & (1 << i)) > 0)
                 continue;
 
-            sum += memo(getMod(mod, i), cnt + 1, flag | (1 << i));
+            sum += memo(getMod(mod, i), flag | (1 << i));
         }
 
         return dp[mod][flag] = sum;
     }
 
     private static int getMod(int mod, int n) {
-        if(dpMod[mod][n] != -1)
+        if (dpMod[mod][n] != -1)
             return dpMod[mod][n];
 
         int cur = mod;
-        for(int i=0, length = num[n].length; i<length; i++) {
+        for (int i = 0, length = num[n].length; i < length; i++) {
             cur *= 10;
             cur = (cur + num[n][i] - '0') % K;
         }
@@ -92,11 +89,6 @@ public class P1086_answer {
     }
 
     private static long GCD(long p, long q) {
-        if(p > q) {
-            long tmp = p;
-            p = q;
-            q = tmp;
-        }
 
         while (p % q != 0) {
             long tmp = p % q;
