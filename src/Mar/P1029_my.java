@@ -7,12 +7,13 @@ import java.io.InputStreamReader;
 public class P1029_my {
     private static int N;
     private static int[][] price;
-    private static int result;
+    private static int[][] dp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         price = new int[N][N];
+        dp = new int[N][1 << N];
 
         for (int i = 0; i < N; i++) {
             String line = br.readLine();
@@ -20,20 +21,24 @@ public class P1029_my {
                 price[i][j] = line.charAt(j) - '0';
         }
 
-        System.out.println(dp(0, 0, 1, 1));
+        System.out.println(memo(0, 0, 1, 1));
     }
 
-    private static int dp(int n, int pay, int cnt, int flag) {
+    private static int memo(int n, int pay, int cnt, int flag) {
         if (flag == (1 << N) - 1)
             return N;
 
-        for (int i = 0; i < N && i != n; i++) {
-            if ((flag & (1 << i)) > 0 || price[n][i] < pay)
+        if(dp[n][flag] != -1)
+            return dp[n][flag];
+
+        int result = cnt;
+        for (int i = 0; i < N; i++) {
+            if ((flag & (1 << i)) > 0 || i == n || price[n][i] < pay)
                 continue;
 
-            cnt = dp(i, price[n][i], cnt + 1, flag | (1 << i));
+            result = Math.max(result, memo(i, price[n][i], cnt + 1,flag | (1 << i)));
         }
 
-        return cnt;
+        return dp[n][flag] = result;
     }
 }
