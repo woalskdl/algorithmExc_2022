@@ -3,6 +3,7 @@ package Mar;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class P1029_my {
     private static int N;
@@ -17,6 +18,7 @@ public class P1029_my {
 
         for (int i = 0; i < N; i++) {
             String line = br.readLine();
+            Arrays.fill(dp[i], -1);
             for (int j = 0; j < N; j++)
                 price[i][j] = line.charAt(j) - '0';
         }
@@ -29,7 +31,7 @@ public class P1029_my {
             return N;
 
         if(dp[n][flag] != -1)
-            return dp[n][flag];
+            return Math.max(cnt, dp[n][flag]);
 
         int result = cnt;
         for (int i = 0; i < N; i++) {
