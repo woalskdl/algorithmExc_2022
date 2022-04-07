@@ -3,10 +3,7 @@ package Apr;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class P1495_my {
     private static int N;
@@ -31,7 +28,20 @@ public class P1495_my {
             V[i] = Integer.parseInt(st.nextToken());
 
         // V[i] 정렬한 다음에 싹 더해보고 크면 작은거부터 빼다가 M보다 작거나 같아지면 출력해보자
+        // M보다 작거나 같아지는 케이스가 여러 경우가 있을 경우, M보다 작아지려면 여러개의 수가 필요할 경우
+        Arrays.sort(V);
+        int result = S + Arrays.stream(V).sum();
 
+        for(int i=0; i<N; i++) {
+            if(result <= M)
+                break;
+
+            result -= V[i] * 2;
+        }
+
+        System.out.println(result);
+
+        /*
         dp.add(S);
         List<Integer> list = new ArrayList<>();
 
@@ -60,14 +70,17 @@ public class P1495_my {
 //                dp[i][j * 2 + 1] = dp[i - 1][j] + V[i] <= M ? dp[i - 1][j] + V[i] : -1;
 //            }
         }
+         */
 
 //        System.out.println(memo(0, S));
 //        System.out.println(Arrays.stream(dp[N - 1]).max().getAsInt());
 
+        /*
         if (dp.isEmpty())
             System.out.println(-1);
         else
             System.out.println(Collections.max(dp));
+         */
 
     }
 
