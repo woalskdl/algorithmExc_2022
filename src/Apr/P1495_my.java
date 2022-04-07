@@ -30,6 +30,8 @@ public class P1495_my {
         for (int i = 0; i < N; i++)
             V[i] = Integer.parseInt(st.nextToken());
 
+        // V[i] 정렬한 다음에 싹 더해보고 크면 작은거부터 빼다가 M보다 작거나 같아지면 출력해보자
+
         dp.add(S);
         List<Integer> list = new ArrayList<>();
 
