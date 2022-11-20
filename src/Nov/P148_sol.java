@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Stack;
 
-public class P148_Sol {
+public class P148_sol {
     private static int n;
     private static int r;
 
