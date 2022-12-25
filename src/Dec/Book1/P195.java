@@ -1,9 +1,9 @@
-package Nov.Book1;
+package Dec.Book1;
 
 /*
 울타리 잘라내기 (ID : FENCE)
 너비가 같은 N개의 나무 판자를 붙여 세운 울타리가 있는데
-이 판자들이 망가져 울타리를 통째록 교체하려 한다.
+이 판자들이 망가져 울타리를 통째로 교체하려 한다.
 이때, 버리는 울타리의 일부를 직사각형으로 잘라내어 재활용하고자 하는데
 잘라낼 수 있는 직사각형의 최대 너비는?
 
@@ -50,7 +50,7 @@ public class P195 {
             String heights = br.readLine();
 
             List<Integer> heightList = Arrays.stream(heights.split(" ")).map(Integer::parseInt).collect(Collectors.toList());
-            sf.append(solve(heightList, 0, heightList.size() - 1) + "\n");
+            sf.append(solve(heightList, 0, heightList.size() - 1)).append("\n");
         }
 
         System.out.println(sf);
